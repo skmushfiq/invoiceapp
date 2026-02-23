@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sun Pharma — Add Invoice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #f97316;
+            --primary-dark: #ea580c;
+            --bg: #0f1729;
+            --bg-sidebar: #0b1120;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.09);
+            --border-focus: #f97316;
+            --text: #f1f5f9;
+            --muted: #64748b;
+            --muted2: #94a3b8;
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --row-hover: rgba(249, 115, 22, 0.05);
+            --danger: #f87171;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Topbar ── */
+        header.topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            height: 62px;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 12px rgba(249, 115, 22, 0.35);
+        }
+
+        .logo-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .logo-text h1 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .logo-text span {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        nav a {
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--muted2);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+        }
+
+        nav a.active {
+            background: rgba(249, 115, 22, 0.14);
+            color: var(--primary);
+        }
+
+        nav {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f97316, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ── Layout ── */
+        .page-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 1.25rem;
+        }
+
+        /* ── Page heading ── */
+        .page-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .page-heading h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .page-heading p {
+            font-size: 0.85rem;
+            color: var(--muted2);
+            margin-top: 3px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .breadcrumb a {
+            color: var(--muted2);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary);
+        }
+
+        .breadcrumb span {
+            color: var(--muted);
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-header h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-header h3 .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 6px rgba(249, 115, 22, 0.5);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* ── Form grid ── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group.span2 {
+            grid-column: span 2;
+        }
+
+        .form-group.span-full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--muted2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--muted);
+        }
+
+        .input-wrap .input-icon svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            color: var(--text);
+            font-size: 0.88rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .input-wrap input {
+            padding-left: 36px;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--muted);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--border-focus);
+            background: rgba(249, 115, 22, 0.05);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+        }
+
+        select option {
+            background: #1e293b;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1) opacity(0.4);
+            cursor: pointer;
+        }
+
+        /* ── File Upload ── */
+        .file-drop {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            position: relative;
+        }
+
+        .file-drop:hover,
+        .file-drop.drag-over {
+            border-color: var(--primary);
+            background: rgba(249, 115, 22, 0.05);
+        }
+
+        .file-drop input[type="file"] {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            padding: 0;
+            border: none;
+            background: none;
+        }
+
+        .file-drop .upload-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 10px;
+            background: rgba(249, 115, 22, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .file-drop .upload-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .file-drop p {
+            font-size: 0.85rem;
+            color: var(--muted2);
+            margin-bottom: 3px;
+        }
+
+        .file-drop small {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        #fileNames {
+            margin-top: 10px;
+            font-size: 0.78rem;
+            color: var(--primary);
+            word-break: break-all;
+        }
+
+        /* ── Items Table ── */
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        table.items-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 820px;
+        }
+
+        table.items-table thead {
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid var(--border);
+        }
+
+        table.items-table th {
+            padding: 10px 12px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--muted2);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        table.items-table th.center {
+            text-align: center;
+        }
+
+        table.items-table th.right {
+            text-align: right;
+        }
+
+        table.items-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+        }
+
+        table.items-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        table.items-table tbody tr:hover {
+            background: var(--row-hover);
+        }
+
+        table.items-table td {
+            padding: 8px 10px;
+            vertical-align: middle;
+        }
+
+        table.items-table td input {
+            padding: 7px 10px;
+            width: 100%;
+            min-width: 70px;
+        }
+
+        table.items-table td input[type="number"] {
+            text-align: right;
+        }
+
+        /* SKU code narrow */
+        table.items-table td:nth-child(1) input {
+            min-width: 85px;
+        }
+
+        /* SKU name wider */
+        table.items-table td:nth-child(2) input {
+            min-width: 160px;
+        }
+
+        .total-cell {
+            font-weight: 700;
+            color: var(--primary);
+            text-align: right;
+            padding-right: 14px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .del-btn {
+            background: rgba(248, 113, 113, 0.08);
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            color: var(--danger);
+            border-radius: 7px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s;
+            flex-shrink: 0;
+            margin: 0 auto;
+        }
+
+        .del-btn:hover {
+            background: rgba(248, 113, 113, 0.18);
+        }
+
+        .del-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Add row button */
+        .add-row-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin: 1rem 1.5rem;
+            padding: 7px 14px;
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px dashed rgba(249, 115, 22, 0.4);
+            border-radius: 8px;
+            color: var(--primary);
+            font-size: 0.83rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .add-row-btn:hover {
+            background: rgba(249, 115, 22, 0.18);
+            border-color: var(--primary);
+        }
+
+        .add-row-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Summary strip */
+        .summary-strip {
+            border-top: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .summary-item {
+            text-align: right;
+        }
+
+        .summary-item .s-label {
+            font-size: 0.72rem;
+            color: var(--muted2);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 2px;
+        }
+
+        .summary-item .s-value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .summary-item.grand .s-value {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* ── Sticky Footer ── */
+        footer.form-footer {
+            position: sticky;
+            bottom: 0;
+            background: var(--bg-sidebar);
+            border-top: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            z-index: 50;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted2);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            border-color: var(--muted2);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+            box-shadow: 0 3px 16px rgba(249, 115, 22, 0.35);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 22px rgba(249, 115, 22, 0.45);
+        }
+
+        .btn-save:active {
+            transform: translateY(0);
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 80px;
+            right: 2rem;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── AI Loading Overlay ── */
+        #loadingOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 16, 35, 0.92);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s;
+        }
+
+        #loadingOverlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .ov-box {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem 3rem;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+        }
+
+        .ov-spinner {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #f97316, #ea580c, transparent);
+            animation: ovSpin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+            position: relative;
+        }
+
+        .ov-spinner::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            background: #0f1729;
+            border-radius: 50%;
+        }
+
+        @keyframes ovSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ov-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 6px;
+        }
+
+        .ov-step {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            min-height: 1.2em;
+            transition: opacity 0.3s;
+            margin-bottom: 1.5rem;
+        }
+
+        .ov-bar-wrap {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 99px;
+            height: 6px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .ov-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #f97316, #ea580c);
+            border-radius: 99px;
+            transition: width 0.5s ease;
+        }
+
+        .ov-pct {
+            font-size: 0.78rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .ov-file {
+            font-size: 0.75rem;
+            color: #475569;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+
+        /* Row number badge */
+        .row-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: var(--muted2);
+            margin: 0 auto;
+            flex-shrink: 0;
+            font-weight: 600;
+        }
+
+        @media (max-width: 640px) {
+            .page-body {
+                padding: 1rem;
+            }
+
+            footer.form-footer,
+            header.topbar {
+                padding: 0.75rem 1rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .card-body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Top Bar ── -->
+    <header class="topbar">
+        <a href="login.html" class="logo-wrap">
+            <div class="logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="5" />
+                    <path
+                        d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"
+                        fill="none" stroke="white" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="logo-text">
+                <h1>Sun Pharma</h1>
+                <span>Invoice Management</span>
+            </div>
+        </a>
+
+        <nav>
+            <a href="#">Dashboard</a>
+            <a href="invoices.html">Invoices</a>
+            <a href="add-invoice.html" class="active">Add Invoice</a>
+            <a href="#">Reports</a>
+        </nav>
+
+        <div class="avatar" title="Admin">AD</div>
+    </header>
+
+    <!-- ── Page Body ── -->
+    <div class="page-body">
+
+        <!-- Page heading -->
+        <div class="page-heading">
+            <div>
+                <div class="breadcrumb">
+                    <a href="invoices.html">Invoices</a>
+                    <span>/</span>
+                    <span>New Invoice</span>
+                </div>
+                <h2 style="margin-top:6px;">Add New Invoice</h2>
+                <p>Fill in the header details and add product line items</p>
+            </div>
+        </div>
+
+        <!-- ══ HEADER SECTION ══ -->
+        <div class="card">
+            <div class="card-header">
+                <h3><span class="dot"></span> Invoice Header</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-grid">
+
+                    <!-- Invoice Date -->
+                    <div class="form-group">
+                        <label for="invoiceDate">Invoice Date</label>
+                        <div class="input-wrap">
+                            <span class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </span>
+                            <input type="date" id="invoiceDate" required />
+                        </div>
+                    </div>
+
+                    <!-- Invoice No -->
+                    <div class="form-group">
+                        <label for="invoiceNo">Invoice No.</label>
+                        <div class="input-wrap">
+                            <span class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </span>
+                            <input type="text" id="invoiceNo" placeholder="SP-2026-0049" required />
+                        </div>
+                    </div>
+
+                    <!-- Chemist -->
+                    <div class="form-group">
+                        <label for="chemist">Chemist</label>
+                        <div class="input-wrap">
+                            <span class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                </svg>
+                            </span>
+                            <input type="text" id="chemist" placeholder="e.g. MedPlus Pharmacy" required />
+                        </div>
+                    </div>
+
+                    <!-- Stockist -->
+                    <div class="form-group">
+                        <label for="stockist">Stockist</label>
+                        <div class="input-wrap">
+                            <span class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                            </span>
+                            <input type="text" id="stockist" placeholder="e.g. Apollo Medicals Dist." required />
+                        </div>
+                    </div>
+
+                    <!-- File Upload (spans full row) -->
+                    <div class="form-group span-full">
+                        <label>Attach Document</label>
+                        <div class="file-drop" id="fileDrop">
+                            <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls"
+                                onchange="handleFiles(this.files)" />
+                            <div class="upload-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                            </div>
+                            <p>Drag &amp; drop files here, or <strong style="color:var(--primary)">browse</strong></p>
+                            <small>Supports PDF, JPG, PNG, XLSX — max 10 MB each</small>
+                            <div id="fileNames"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ ITEMS SECTION ══ -->
+        <div class="card">
+            <div class="card-header">
+                <h3><span class="dot"></span> Item List</h3>
+                <span style="font-size:0.78rem;color:var(--muted2)">All amounts in ₹</span>
+            </div>
+
+            <div class="table-scroll">
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width:36px; text-align:center;">#</th>
+                            <th style="width:100px;">SKU Code</th>
+                            <th>SKU Name</th>
+                            <th style="width:100px; text-align:right;">Qty</th>
+                            <th style="width:110px; text-align:right;">Rate (₹)</th>
+                            <th style="width:110px; text-align:right;">Tax Rate (%)</th>
+                            <th style="width:120px; text-align:right;">Total (₹)</th>
+                            <th style="width:46px; text-align:center;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsBody">
+                        <!-- rows inserted by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button class="add-row-btn" onclick="addRow()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Item
+            </button>
+
+            <!-- Summary strip -->
+            <div class="summary-strip">
+                <div class="summary-item">
+                    <div class="s-label">Subtotal</div>
+                    <div class="s-value" id="sumSubtotal">₹0.00</div>
+                </div>
+                <div class="summary-item">
+                    <div class="s-label">Tax Amount</div>
+                    <div class="s-value" id="sumTax">₹0.00</div>
+                </div>
+                <div class="summary-item grand">
+                    <div class="s-label">Grand Total</div>
+                    <div class="s-value" id="sumGrand">₹0.00</div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /page-body -->
+
+    <!-- ══ STICKY FOOTER ══ -->
+    <footer class="form-footer">
+        <a href="invoices.html" class="btn btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            Discard
+        </a>
+        <button class="btn btn-ghost" onclick="resetForm()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Reset
+        </button>
+        <button class="btn btn-save" onclick="saveInvoice()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M17 16v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2m12-5l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Save Invoice
+        </button>
+    </footer>
+
+    <!-- Toast -->
+    <div id="toast">✓ Invoice saved successfully!</div>
+
+    <!-- AI Loading Overlay -->
+    <div id="loadingOverlay">
+        <div class="ov-box">
+            <div class="ov-spinner"></div>
+            <div class="ov-title">📄 Analysing Document…</div>
+            <div class="ov-step" id="ovStep">Reading file metadata</div>
+            <div class="ov-bar-wrap">
+                <div class="ov-bar" id="ovBar"></div>
+            </div>
+            <div class="ov-pct" id="ovPct">0%</div>
+            <div class="ov-file" id="ovFile"></div>
+        </div>
+    </div>
+
+    <script>
+        // ── Set today's date ──
+        document.getElementById('invoiceDate').value = new Date().toISOString().split('T')[0];
+        // Auto-generate invoice no.
+        document.getElementById('invoiceNo').value = 'SP-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 900) + 100).padStart(4, '0');
+
+        // ── File upload ──
+        const fileDrop = document.getElementById('fileDrop');
+        fileDrop.addEventListener('dragover', e => { e.preventDefault(); fileDrop.classList.add('drag-over'); });
+        fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('drag-over'));
+        fileDrop.addEventListener('drop', e => {
+            e.preventDefault();
+            fileDrop.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        // ── Loading overlay + dummy fill ──
+        const STEPS = [
+            'Reading file metadata…',
+            'Extracting document structure…',
+            'Detecting invoice header fields…',
+            'Parsing chemist & stockist details…',
+            'Scanning line items & SKUs…',
+            'Validating quantities and rates…',
+            'Applying GST / tax computation…',
+            'Cross-checking with vendor database…',
+            'Finalising extracted data…',
+            'Populating form fields…'
+        ];
+
+        const DUMMY_HEADER = {
+            date: '2026-02-23',
+            invoiceNo: 'SP-2026-0049',
+            chemist: 'MedPlus Pharmacy, Andheri East',
+            stockist: 'Apollo Medicals Distributors'
+        };
+
+        const DUMMY_ITEMS = [
+            { sku: 'SP-TAB-001', name: 'Metformin 500mg Tablets (Strip/10)', qty: 50, rate: 12.50, tax: 5 },
+            { sku: 'SP-INJ-012', name: 'Pantoprazole 40mg IV Injection', qty: 24, rate: 48.00, tax: 12 },
+            { sku: 'SP-SYP-007', name: 'Amoxicillin 250mg/5ml Syrup 60ml', qty: 36, rate: 28.75, tax: 5 },
+            { sku: 'SP-CAP-034', name: 'Omeprazole 20mg Capsules (Strip/10)', qty: 100, rate: 8.00, tax: 5 },
+            { sku: 'SP-CRM-021', name: 'Betamethasone 0.05% Cream 15g', qty: 18, rate: 65.00, tax: 12 }
+        ];
+
+        function handleFiles(files) {
+            if (!files || !files.length) return;
+            const firstName = files[0].name;
+
+            // Show file names
+            const names = Array.from(files).map(f => '📎 ' + f.name).join('<br>');
+            document.getElementById('fileNames').innerHTML = names;
+
+            // Show overlay
+            const overlay = document.getElementById('loadingOverlay');
+            const ovStep = document.getElementById('ovStep');
+            const ovBar = document.getElementById('ovBar');
+            const ovPct = document.getElementById('ovPct');
+            const ovFileEl = document.getElementById('ovFile');
+
+            ovFileEl.textContent = firstName;
+            overlay.classList.add('active');
+
+            const total = 10000; // 10 seconds
+            const tick = 200;   // update every 200ms
+            const ticks = total / tick;
+            let elapsed = 0;
+
+            const timer = setInterval(() => {
+                elapsed++;
+                const pct = Math.min(Math.round((elapsed / ticks) * 100), 100);
+                const stepIdx = Math.min(Math.floor((elapsed / ticks) * STEPS.length), STEPS.length - 1);
+
+                ovBar.style.width = pct + '%';
+                ovPct.textContent = pct + '%';
+                ovStep.textContent = STEPS[stepIdx];
+
+                if (elapsed >= ticks) {
+                    clearInterval(timer);
+
+                    // ── Fill header ──
+                    document.getElementById('invoiceDate').value = DUMMY_HEADER.date;
+                    document.getElementById('invoiceNo').value = DUMMY_HEADER.invoiceNo;
+                    document.getElementById('chemist').value = DUMMY_HEADER.chemist;
+                    document.getElementById('stockist').value = DUMMY_HEADER.stockist;
+
+                    // ── Fill items ──
+                    document.getElementById('itemsBody').innerHTML = '';
+                    rowId = 0;
+                    DUMMY_ITEMS.forEach(item => {
+                        addRow(item.sku, item.name, item.qty, item.rate, item.tax);
+                    });
+                    calcAll();
+
+                    // Hide overlay
+                    overlay.classList.remove('active');
+
+                    // Show success msg
+                    ovBar.style.width = '0%';
+                    ovPct.textContent = '0%';
+                    const infoToast = document.getElementById('toast');
+                    infoToast.textContent = '✓ Document parsed — form filled with extracted data!';
+                    infoToast.classList.add('show');
+                    setTimeout(() => { infoToast.classList.remove('show'); infoToast.textContent = '✓ Invoice saved successfully!'; }, 4000);
+                }
+            }, tick);
+        }
+
+        // ── Row management ──
+        let rowId = 0;
+
+        function addRow(sku = '', name = '', qty = '', rate = '', tax = '') {
+            const id = ++rowId;
+            const tbody = document.getElementById('itemsBody');
+            const tr = document.createElement('tr');
+            tr.id = 'row-' + id;
+            tr.innerHTML = `
+      <td><div class="row-num">${tbody.rows.length + 1}</div></td>
+      <td><input type="text"   placeholder="SKU001"         value="${sku}"  oninput="updateRowNums()"/></td>
+      <td><input type="text"   placeholder="Product Name"   value="${name}"/></td>
+      <td><input type="number" placeholder="0.000" step="0.001" min="0"  value="${qty}"  oninput="calcRow(${id})"/></td>
+      <td><input type="number" placeholder="0.00"  step="0.01"  min="0"  value="${rate}" oninput="calcRow(${id})"/></td>
+      <td><input type="number" placeholder="0.00"  step="0.01"  min="0" max="100" value="${tax}" oninput="calcRow(${id})"/></td>
+      <td class="total-cell" id="total-${id}">₹0.00</td>
+      <td>
+        <button class="del-btn" onclick="delRow(${id})" title="Remove">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+        </button>
+      </td>
+    `;
+            tbody.appendChild(tr);
+            if (qty && rate) calcRow(id);
+            return id;
+        }
+
+        function delRow(id) {
+            const tr = document.getElementById('row-' + id);
+            if (tr) tr.remove();
+            updateRowNums();
+            calcAll();
+        }
+
+        function updateRowNums() {
+            document.querySelectorAll('#itemsBody tr').forEach((tr, i) => {
+                const badge = tr.querySelector('.row-num');
+                if (badge) badge.textContent = i + 1;
+            });
+        }
+
+        function calcRow(id) {
+            const tr = document.getElementById('row-' + id);
+            const inputs = tr.querySelectorAll('input[type="number"]');
+            const qty = parseFloat(inputs[0].value) || 0;
+            const rate = parseFloat(inputs[1].value) || 0;
+            const tax = parseFloat(inputs[2].value) || 0;
+            const subtotal = qty * rate;
+            const taxAmt = subtotal * tax / 100;
+            const total = subtotal + taxAmt;
+            document.getElementById('total-' + id).textContent = '₹' + total.toFixed(2);
+            calcAll();
+        }
+
+        function calcAll() {
+            let subtotal = 0, taxTotal = 0;
+            document.querySelectorAll('#itemsBody tr').forEach(tr => {
+                const inputs = tr.querySelectorAll('input[type="number"]');
+                if (!inputs.length) return;
+                const qty = parseFloat(inputs[0].value) || 0;
+                const rate = parseFloat(inputs[1].value) || 0;
+                const tax = parseFloat(inputs[2].value) || 0;
+                const sub = qty * rate;
+                subtotal += sub;
+                taxTotal += sub * tax / 100;
+            });
+            document.getElementById('sumSubtotal').textContent = '₹' + subtotal.toFixed(2);
+            document.getElementById('sumTax').textContent = '₹' + taxTotal.toFixed(2);
+            document.getElementById('sumGrand').textContent = '₹' + (subtotal + taxTotal).toFixed(2);
+        }
+
+        function resetForm() {
+            document.getElementById('itemsBody').innerHTML = '';
+            document.getElementById('fileNames').innerHTML = '';
+            document.getElementById('chemist').value = '';
+            document.getElementById('stockist').value = '';
+            rowId = 0;
+            addRow(); addRow(); addRow();
+            calcAll();
+        }
+
+        function saveInvoice() {
+            const date = document.getElementById('invoiceDate').value;
+            const invNo = document.getElementById('invoiceNo').value.trim();
+            const chemist = document.getElementById('chemist').value.trim();
+            const stockist = document.getElementById('stockist').value.trim();
+
+            if (!date || !invNo || !chemist || !stockist) {
+                alert('Please fill all header fields before saving.');
+                return;
+            }
+            // Show success toast
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ── Init with 3 blank rows ──
+        addRow(); addRow(); addRow();
+    </script>
+</body>
+
+</html>

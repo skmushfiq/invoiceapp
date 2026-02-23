@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sun Pharma — Invoices</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #f97316;
+            --primary-dark: #ea580c;
+            --bg: #0f1729;
+            --bg-sidebar: #0b1120;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.09);
+            --text: #f1f5f9;
+            --muted: #64748b;
+            --muted2: #94a3b8;
+            --row-hover: rgba(249, 115, 22, 0.06);
+            --badge-green: rgba(34, 197, 94, 0.15);
+            --badge-green-text: #4ade80;
+            --badge-yellow: rgba(234, 179, 8, 0.15);
+            --badge-yellow-text: #fbbf24;
+            --badge-red: rgba(239, 68, 68, 0.15);
+            --badge-red-text: #f87171;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Topbar ── */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            height: 62px;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 12px rgba(249, 115, 22, 0.35);
+        }
+
+        .logo-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .logo-text h1 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .logo-text span {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        nav a {
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--muted2);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+        }
+
+        nav a.active {
+            background: rgba(249, 115, 22, 0.14);
+            color: var(--primary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f97316, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ── Main ── */
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Page title row */
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 1.75rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-header h2 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .page-header p {
+            font-size: 0.85rem;
+            color: var(--muted2);
+            margin-top: 3px;
+        }
+
+        .btn-new {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+            font-size: 0.86rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 3px 16px rgba(249, 115, 22, 0.35);
+            transition: transform 0.15s, box-shadow 0.15s;
+            text-decoration: none;
+        }
+
+        .btn-new:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 22px rgba(249, 115, 22, 0.45);
+        }
+
+        .btn-new svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Stats row */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.1rem 1.25rem;
+            backdrop-filter: blur(12px);
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: var(--muted2);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .stat-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .stat-card .sub {
+            font-size: 0.75rem;
+            color: var(--badge-green-text);
+            margin-top: 4px;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .search-wrap svg {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 15px;
+            height: 15px;
+            color: var(--muted);
+            pointer-events: none;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 9px 12px 9px 36px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            color: var(--text);
+            font-size: 0.875rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #searchInput::placeholder {
+            color: var(--muted);
+        }
+
+        #searchInput:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+        }
+
+        .filter-select {
+            padding: 9px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            color: var(--text);
+            font-size: 0.875rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary);
+        }
+
+        .filter-select option {
+            background: #1e293b;
+        }
+
+        /* Table card */
+        .table-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            padding: 13px 16px;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--muted2);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.2s;
+        }
+
+        th:hover {
+            color: var(--text);
+        }
+
+        th .th-inner {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        th svg {
+            width: 12px;
+            height: 12px;
+            opacity: 0.5;
+            flex-shrink: 0;
+        }
+
+        th.sorted {
+            color: var(--primary);
+        }
+
+        th.sorted svg {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+            cursor: pointer;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--row-hover);
+        }
+
+        td {
+            padding: 13px 16px;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        td.date {
+            color: var(--muted2);
+            font-size: 0.82rem;
+        }
+
+        td.inv-no {
+            font-weight: 600;
+            color: var(--primary);
+            font-family: monospace;
+            font-size: 0.88rem;
+        }
+
+        td.chemist {
+            font-weight: 500;
+        }
+
+        td.stockist {
+            color: var(--muted2);
+        }
+
+        td.amount {
+            font-weight: 700;
+            font-size: 0.93rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .badge-paid {
+            background: var(--badge-green);
+            color: var(--badge-green-text);
+        }
+
+        .badge-pending {
+            background: var(--badge-yellow);
+            color: var(--badge-yellow-text);
+        }
+
+        .badge-overdue {
+            background: var(--badge-red);
+            color: var(--badge-red-text);
+        }
+
+        /* Action button */
+        .action-btn {
+            padding: 5px 10px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: transparent;
+            color: var(--muted2);
+            font-size: 0.78rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+        }
+
+        .action-btn:hover {
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-top: 1px solid var(--border);
+            font-size: 0.82rem;
+            color: var(--muted2);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .page-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .page-btn {
+            padding: 5px 11px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: transparent;
+            color: var(--muted2);
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: rgba(249, 115, 22, 0.15);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.35;
+            cursor: default;
+        }
+
+        /* Empty state */
+        #emptyRow td {
+            text-align: center;
+            padding: 3rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            main {
+                padding: 1.25rem;
+            }
+
+            header {
+                padding: 0 1rem;
+            }
+
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Topbar ── -->
+    <header>
+        <a href="login.html" class="logo-wrap">
+            <div class="logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="5" />
+                    <path
+                        d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"
+                        fill="none" stroke="white" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="logo-text">
+                <h1>Sun Pharma</h1>
+                <span>Invoice Management</span>
+            </div>
+        </a>
+
+        <nav>
+            <a href="#">Dashboard</a>
+            <a href="invoices.html" class="active">Invoices</a>
+            <a href="#">Reports</a>
+            <a href="#">Settings</a>
+        </nav>
+
+        <div class="header-right">
+            <div class="avatar" title="Admin User">AD</div>
+        </div>
+    </header>
+
+    <!-- ── Main ── -->
+    <main>
+        <div class="page-header">
+            <div>
+                <h2>Invoice List</h2>
+                <p>Manage and track all pharmaceutical invoices</p>
+            </div>
+            <a href="add-invoice.html" class="btn-new">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                New Invoice
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="label">Total Invoices</div>
+                <div class="value" id="statTotal">—</div>
+                <div class="sub">This month</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Total Value</div>
+                <div class="value" id="statValue">—</div>
+                <div class="sub">All invoices</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Paid</div>
+                <div class="value" id="statPaid">—</div>
+                <div class="sub" style="color:var(--badge-green-text)">Cleared</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Pending / Overdue</div>
+                <div class="value" id="statPending">—</div>
+                <div class="sub" style="color:var(--badge-yellow-text)">Needs attention</div>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="search-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search invoice, chemist, stockist…" />
+            </div>
+            <select class="filter-select" id="statusFilter">
+                <option value="">All Statuses</option>
+                <option value="Paid">Paid</option>
+                <option value="Pending">Pending</option>
+                <option value="Overdue">Overdue</option>
+            </select>
+            <select class="filter-select" id="rowsFilter">
+                <option value="10">10 rows</option>
+                <option value="20">20 rows</option>
+                <option value="50">50 rows</option>
+            </select>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+            <div class="table-wrap">
+                <table id="invoiceTable">
+                    <thead>
+                        <tr>
+                            <th data-col="date" onclick="sortBy('date')">
+                                <div class="th-inner">Date <svg viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M8 2l3 4H5l3-4zm0 12l-3-4h6l-3 4z" />
+                                    </svg></div>
+                            </th>
+                            <th data-col="invoiceNo" onclick="sortBy('invoiceNo')">
+                                <div class="th-inner">Invoice No. <svg viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M8 2l3 4H5l3-4zm0 12l-3-4h6l-3 4z" />
+                                    </svg></div>
+                            </th>
+                            <th data-col="chemist" onclick="sortBy('chemist')">
+                                <div class="th-inner">Chemist <svg viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M8 2l3 4H5l3-4zm0 12l-3-4h6l-3 4z" />
+                                    </svg></div>
+                            </th>
+                            <th data-col="stockist" onclick="sortBy('stockist')">
+                                <div class="th-inner">Stockist <svg viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M8 2l3 4H5l3-4zm0 12l-3-4h6l-3 4z" />
+                                    </svg></div>
+                            </th>
+                            <th data-col="amount" onclick="sortBy('amount')">
+                                <div class="th-inner">Total Invoice Value <svg viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M8 2l3 4H5l3-4zm0 12l-3-4h6l-3 4z" />
+                                    </svg></div>
+                            </th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <span id="pageInfo">Showing 1–10 of 0 invoices</span>
+                <div class="page-btns" id="pageBtns"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ── Sample Data ──
+        const invoices = [
+            { date: '2026-02-22', invoiceNo: 'SP-2026-0048', chemist: 'MedPlus Pharmacy', stockist: 'Apollo Medicals Dist.', amount: 18450, status: 'Paid' },
+            { date: '2026-02-21', invoiceNo: 'SP-2026-0047', chemist: 'HealthCare Chemists', stockist: 'Suraksha Pharma Stockist', amount: 9870, status: 'Pending' },
+            { date: '2026-02-20', invoiceNo: 'SP-2026-0046', chemist: 'Wellness Drug Store', stockist: 'Prime Pharma Dist.', amount: 34200, status: 'Paid' },
+            { date: '2026-02-19', invoiceNo: 'SP-2026-0045', chemist: 'City Pharma', stockist: 'Metro Pharma Dist.', amount: 7650, status: 'Overdue' },
+            { date: '2026-02-18', invoiceNo: 'SP-2026-0044', chemist: 'Sunrise Chemist', stockist: 'Apollo Medicals Dist.', amount: 22100, status: 'Paid' },
+            { date: '2026-02-17', invoiceNo: 'SP-2026-0043', chemist: 'National Drug House', stockist: 'Suraksha Pharma Stockist', amount: 15300, status: 'Paid' },
+            { date: '2026-02-16', invoiceNo: 'SP-2026-0042', chemist: 'Capital Pharmacy', stockist: 'Prime Pharma Dist.', amount: 6780, status: 'Pending' },
+            { date: '2026-02-15', invoiceNo: 'SP-2026-0041', chemist: 'Green Cross Chemist', stockist: 'Metro Pharma Dist.', amount: 28950, status: 'Paid' },
+            { date: '2026-02-14', invoiceNo: 'SP-2026-0040', chemist: 'BestCare Pharmacy', stockist: 'Apollo Medicals Dist.', amount: 11250, status: 'Overdue' },
+            { date: '2026-02-13', invoiceNo: 'SP-2026-0039', chemist: 'Lifeline Drug Store', stockist: 'Suraksha Pharma Stockist', amount: 5400, status: 'Paid' },
+            { date: '2026-02-12', invoiceNo: 'SP-2026-0038', chemist: 'Om Pharma', stockist: 'Prime Pharma Dist.', amount: 41200, status: 'Paid' },
+            { date: '2026-02-11', invoiceNo: 'SP-2026-0037', chemist: 'Shree Drug House', stockist: 'Metro Pharma Dist.', amount: 8900, status: 'Pending' },
+            { date: '2026-02-10', invoiceNo: 'SP-2026-0036', chemist: 'Sai Medical Store', stockist: 'Apollo Medicals Dist.', amount: 17650, status: 'Paid' },
+            { date: '2026-02-09', invoiceNo: 'SP-2026-0035', chemist: 'Royal Pharmacy', stockist: 'Suraksha Pharma Stockist', amount: 13400, status: 'Paid' },
+            { date: '2026-02-08', invoiceNo: 'SP-2026-0034', chemist: 'Lotus Chemist', stockist: 'Prime Pharma Dist.', amount: 29750, status: 'Overdue' },
+            { date: '2026-02-07', invoiceNo: 'SP-2026-0033', chemist: 'MedPlus Pharmacy', stockist: 'Metro Pharma Dist.', amount: 9200, status: 'Paid' },
+            { date: '2026-02-06', invoiceNo: 'SP-2026-0032', chemist: 'HealthCare Chemists', stockist: 'Apollo Medicals Dist.', amount: 38500, status: 'Paid' },
+            { date: '2026-02-05', invoiceNo: 'SP-2026-0031', chemist: 'Wellness Drug Store', stockist: 'Suraksha Pharma Stockist', amount: 6100, status: 'Pending' },
+            { date: '2026-02-04', invoiceNo: 'SP-2026-0030', chemist: 'City Pharma', stockist: 'Prime Pharma Dist.', amount: 21800, status: 'Paid' },
+            { date: '2026-02-03', invoiceNo: 'SP-2026-0029', chemist: 'Sunrise Chemist', stockist: 'Metro Pharma Dist.', amount: 14550, status: 'Paid' },
+        ];
+
+        // State
+        let filtered = [...invoices];
+        let sortCol = 'date', sortDir = -1; // -1 desc
+        let page = 1;
+        let rowsPerPage = 10;
+
+        // ── Compute stats ──
+        function updateStats() {
+            document.getElementById('statTotal').textContent = invoices.length;
+            const total = invoices.reduce((s, r) => s + r.amount, 0);
+            document.getElementById('statValue').textContent = '₹' + total.toLocaleString('en-IN');
+            document.getElementById('statPaid').textContent = invoices.filter(r => r.status === 'Paid').length;
+            const pend = invoices.filter(r => r.status !== 'Paid').length;
+            document.getElementById('statPending').textContent = pend;
+        }
+
+        // ── Render ──
+        function render() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            const start = (page - 1) * rowsPerPage;
+            const pageData = filtered.slice(start, start + rowsPerPage);
+
+            if (!pageData.length) {
+                tbody.innerHTML = `<tr id="emptyRow"><td colspan="7">No invoices found.</td></tr>`;
+            } else {
+                pageData.forEach(row => {
+                    const tr = document.createElement('tr');
+                    const badgeCls = row.status === 'Paid' ? 'badge-paid' : row.status === 'Pending' ? 'badge-pending' : 'badge-overdue';
+                    tr.innerHTML = `
+          <td class="date">${formatDate(row.date)}</td>
+          <td class="inv-no">${row.invoiceNo}</td>
+          <td class="chemist">${row.chemist}</td>
+          <td class="stockist">${row.stockist}</td>
+          <td class="amount">₹${row.amount.toLocaleString('en-IN')}</td>
+          <td><span class="badge ${badgeCls}">${row.status}</span></td>
+          <td><button class="action-btn">View</button></td>
+        `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Pagination info
+            const total = filtered.length;
+            const s = total ? start + 1 : 0;
+            const e = Math.min(start + rowsPerPage, total);
+            document.getElementById('pageInfo').textContent = `Showing ${s}–${e} of ${total} invoices`;
+            renderPageBtns(total);
+
+            // Highlight sorted header
+            document.querySelectorAll('th').forEach(th => th.classList.remove('sorted'));
+            const sortTh = document.querySelector(`th[data-col="${sortCol}"]`);
+            if (sortTh) sortTh.classList.add('sorted');
+        }
+
+        function renderPageBtns(total) {
+            const totalPages = Math.ceil(total / rowsPerPage);
+            const container = document.getElementById('pageBtns');
+            container.innerHTML = '';
+
+            const prev = document.createElement('button');
+            prev.className = 'page-btn';
+            prev.textContent = '←';
+            prev.disabled = page === 1;
+            prev.onclick = () => { if (page > 1) { page--; render(); } };
+            container.appendChild(prev);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'page-btn' + (i === page ? ' active' : '');
+                btn.textContent = i;
+                btn.onclick = () => { page = i; render(); };
+                container.appendChild(btn);
+            }
+
+            const next = document.createElement('button');
+            next.className = 'page-btn';
+            next.textContent = '→';
+            next.disabled = page === totalPages || totalPages === 0;
+            next.onclick = () => { if (page < totalPages) { page++; render(); } };
+            container.appendChild(next);
+        }
+
+        function formatDate(d) {
+            const dt = new Date(d);
+            return dt.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        // ── Sort ──
+        function sortBy(col) {
+            if (sortCol === col) sortDir *= -1;
+            else { sortCol = col; sortDir = 1; }
+            filtered.sort((a, b) => {
+                let va = a[col], vb = b[col];
+                if (col === 'amount') return (va - vb) * sortDir;
+                return String(va).localeCompare(String(vb)) * sortDir;
+            });
+            page = 1;
+            render();
+        }
+
+        // ── Filter ──
+        function applyFilters() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value;
+            filtered = invoices.filter(row => {
+                const matchQ = !q ||
+                    row.invoiceNo.toLowerCase().includes(q) ||
+                    row.chemist.toLowerCase().includes(q) ||
+                    row.stockist.toLowerCase().includes(q) ||
+                    row.date.includes(q);
+                const matchStatus = !status || row.status === status;
+                return matchQ && matchStatus;
+            });
+            // Re-apply sort
+            filtered.sort((a, b) => {
+                if (sortCol === 'amount') return (a[sortCol] - b[sortCol]) * sortDir;
+                return String(a[sortCol]).localeCompare(String(b[sortCol])) * sortDir;
+            });
+            page = 1;
+            render();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        document.getElementById('rowsFilter').addEventListener('change', e => {
+            rowsPerPage = parseInt(e.target.value);
+            page = 1;
+            render();
+        });
+
+        // ── Init ──
+        updateStats();
+        sortBy('date'); // default sort by date descending
+    </script>
+</body>
+
+</html>
