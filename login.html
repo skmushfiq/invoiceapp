@@ -501,7 +501,7 @@
                 <a href="#" class="forgot-link">Forgot password?</a>
             </div>
 
-            <button type="submit" class="btn-login" id="loginBtn" onclick="location.href='invoices.html'">
+            <button type="submit" class="btn-login" id="loginBtn" onclick="gotoPage()">
                 <span id="btnText">Sign In</span>
                 <div class="spinner" id="spinner"></div>
             </button>
@@ -568,6 +568,9 @@
                 errorMsg.style.display = 'block';
             }, 1800);
         });
+        function gotoPage() {
+            window.location.href = 'https://htmlpreview.github.io/?https://github.com/skmushfiq/invoiceapp/blob/main/invoices.html';
+        }
     </script>
 </body>
 
