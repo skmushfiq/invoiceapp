@@ -404,7 +404,7 @@
             font-size: 0.88rem;
         }
 
-        td.chemist {
+        td.schemeName {
             font-weight: 500;
         }
 
@@ -607,7 +607,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
                 </svg>
-                <input type="text" id="searchInput" placeholder="Search invoice, chemist, stockist…" />
+                <input type="text" id="searchInput" placeholder="Search invoice, Scheme, stockist…" />
             </div>
             <select class="filter-select" id="statusFilter">
                 <option value="">All Statuses</option>
@@ -638,8 +638,8 @@
                                         <path d="M8 2l3 4H5l3-4zm0 12l-3-4h6l-3 4z" />
                                     </svg></div>
                             </th>
-                            <th data-col="chemist" onclick="sortBy('chemist')">
-                                <div class="th-inner">Chemist <svg viewBox="0 0 16 16" fill="currentColor">
+                            <th data-col="schemeName" onclick="sortBy('schemeName')">
+                                <div class="th-inner">Scheme <svg viewBox="0 0 16 16" fill="currentColor">
                                         <path d="M8 2l3 4H5l3-4zm0 12l-3-4h6l-3 4z" />
                                     </svg></div>
                             </th>
@@ -670,26 +670,26 @@
     <script>
         // ── Sample Data ──
         const invoices = [
-            { date: '2026-02-22', invoiceNo: 'SP-2026-0048', chemist: 'MedPlus Pharmacy', stockist: 'Apollo Medicals Dist.', amount: 18450, status: 'Paid' },
-            { date: '2026-02-21', invoiceNo: 'SP-2026-0047', chemist: 'HealthCare Chemists', stockist: 'Suraksha Pharma Stockist', amount: 9870, status: 'Pending' },
-            { date: '2026-02-20', invoiceNo: 'SP-2026-0046', chemist: 'Wellness Drug Store', stockist: 'Prime Pharma Dist.', amount: 34200, status: 'Paid' },
-            { date: '2026-02-19', invoiceNo: 'SP-2026-0045', chemist: 'City Pharma', stockist: 'Metro Pharma Dist.', amount: 7650, status: 'Overdue' },
-            { date: '2026-02-18', invoiceNo: 'SP-2026-0044', chemist: 'Sunrise Chemist', stockist: 'Apollo Medicals Dist.', amount: 22100, status: 'Paid' },
-            { date: '2026-02-17', invoiceNo: 'SP-2026-0043', chemist: 'National Drug House', stockist: 'Suraksha Pharma Stockist', amount: 15300, status: 'Paid' },
-            { date: '2026-02-16', invoiceNo: 'SP-2026-0042', chemist: 'Capital Pharmacy', stockist: 'Prime Pharma Dist.', amount: 6780, status: 'Pending' },
-            { date: '2026-02-15', invoiceNo: 'SP-2026-0041', chemist: 'Green Cross Chemist', stockist: 'Metro Pharma Dist.', amount: 28950, status: 'Paid' },
-            { date: '2026-02-14', invoiceNo: 'SP-2026-0040', chemist: 'BestCare Pharmacy', stockist: 'Apollo Medicals Dist.', amount: 11250, status: 'Overdue' },
-            { date: '2026-02-13', invoiceNo: 'SP-2026-0039', chemist: 'Lifeline Drug Store', stockist: 'Suraksha Pharma Stockist', amount: 5400, status: 'Paid' },
-            { date: '2026-02-12', invoiceNo: 'SP-2026-0038', chemist: 'Om Pharma', stockist: 'Prime Pharma Dist.', amount: 41200, status: 'Paid' },
-            { date: '2026-02-11', invoiceNo: 'SP-2026-0037', chemist: 'Shree Drug House', stockist: 'Metro Pharma Dist.', amount: 8900, status: 'Pending' },
-            { date: '2026-02-10', invoiceNo: 'SP-2026-0036', chemist: 'Sai Medical Store', stockist: 'Apollo Medicals Dist.', amount: 17650, status: 'Paid' },
-            { date: '2026-02-09', invoiceNo: 'SP-2026-0035', chemist: 'Royal Pharmacy', stockist: 'Suraksha Pharma Stockist', amount: 13400, status: 'Paid' },
-            { date: '2026-02-08', invoiceNo: 'SP-2026-0034', chemist: 'Lotus Chemist', stockist: 'Prime Pharma Dist.', amount: 29750, status: 'Overdue' },
-            { date: '2026-02-07', invoiceNo: 'SP-2026-0033', chemist: 'MedPlus Pharmacy', stockist: 'Metro Pharma Dist.', amount: 9200, status: 'Paid' },
-            { date: '2026-02-06', invoiceNo: 'SP-2026-0032', chemist: 'HealthCare Chemists', stockist: 'Apollo Medicals Dist.', amount: 38500, status: 'Paid' },
-            { date: '2026-02-05', invoiceNo: 'SP-2026-0031', chemist: 'Wellness Drug Store', stockist: 'Suraksha Pharma Stockist', amount: 6100, status: 'Pending' },
-            { date: '2026-02-04', invoiceNo: 'SP-2026-0030', chemist: 'City Pharma', stockist: 'Prime Pharma Dist.', amount: 21800, status: 'Paid' },
-            { date: '2026-02-03', invoiceNo: 'SP-2026-0029', chemist: 'Sunrise Chemist', stockist: 'Metro Pharma Dist.', amount: 14550, status: 'Paid' },
+            { date: '2026-02-22', invoiceNo: 'SP-2026-0048', schemeName: 'Amazon offer', stockist: 'Apollo Medicals Dist.', amount: 18450, status: 'Paid' },
+            { date: '2026-02-21', invoiceNo: 'SP-2026-0047', schemeName: 'Amazon offer', stockist: 'Suraksha Pharma Stockist', amount: 9870, status: 'Pending' },
+            { date: '2026-02-20', invoiceNo: 'SP-2026-0046', schemeName: 'Amazon offer', stockist: 'Prime Pharma Dist.', amount: 34200, status: 'Paid' },
+            { date: '2026-02-19', invoiceNo: 'SP-2026-0045', schemeName: 'Amazon offer', stockist: 'Metro Pharma Dist.', amount: 7650, status: 'Overdue' },
+            { date: '2026-02-18', invoiceNo: 'SP-2026-0044', schemeName: 'Amazon offer', stockist: 'Apollo Medicals Dist.', amount: 22100, status: 'Paid' },
+            { date: '2026-02-17', invoiceNo: 'SP-2026-0043', schemeName: 'Amazon offer', stockist: 'Suraksha Pharma Stockist', amount: 15300, status: 'Paid' },
+            { date: '2026-02-16', invoiceNo: 'SP-2026-0042', schemeName: 'Amazon offer', stockist: 'Prime Pharma Dist.', amount: 6780, status: 'Pending' },
+            { date: '2026-02-15', invoiceNo: 'SP-2026-0041', schemeName: 'Amazon offer', stockist: 'Metro Pharma Dist.', amount: 28950, status: 'Paid' },
+            { date: '2026-02-14', invoiceNo: 'SP-2026-0040', schemeName: 'Amazon offer', stockist: 'Apollo Medicals Dist.', amount: 11250, status: 'Overdue' },
+            { date: '2026-02-13', invoiceNo: 'SP-2026-0039', schemeName: 'Amazon offer', stockist: 'Suraksha Pharma Stockist', amount: 5400, status: 'Paid' },
+            { date: '2026-02-12', invoiceNo: 'SP-2026-0038', schemeName: 'Amazon offer', stockist: 'Prime Pharma Dist.', amount: 41200, status: 'Paid' },
+            { date: '2026-02-11', invoiceNo: 'SP-2026-0037', schemeName: 'Amazon offer', stockist: 'Metro Pharma Dist.', amount: 8900, status: 'Pending' },
+            { date: '2026-02-10', invoiceNo: 'SP-2026-0036', schemeName: 'Amazon offer', stockist: 'Apollo Medicals Dist.', amount: 17650, status: 'Paid' },
+            { date: '2026-02-09', invoiceNo: 'SP-2026-0035', schemeName: 'Amazon offer', stockist: 'Suraksha Pharma Stockist', amount: 13400, status: 'Paid' },
+            { date: '2026-02-08', invoiceNo: 'SP-2026-0034', schemeName: 'Amazon offer', stockist: 'Prime Pharma Dist.', amount: 29750, status: 'Overdue' },
+            { date: '2026-02-07', invoiceNo: 'SP-2026-0033', schemeName: 'Amazon offer', stockist: 'Metro Pharma Dist.', amount: 9200, status: 'Paid' },
+            { date: '2026-02-06', invoiceNo: 'SP-2026-0032', schemeName: 'Amazon offer', stockist: 'Apollo Medicals Dist.', amount: 38500, status: 'Paid' },
+            { date: '2026-02-05', invoiceNo: 'SP-2026-0031', schemeName: 'Amazon offer', stockist: 'Suraksha Pharma Stockist', amount: 6100, status: 'Pending' },
+            { date: '2026-02-04', invoiceNo: 'SP-2026-0030', schemeName: 'Amazon offer', stockist: 'Prime Pharma Dist.', amount: 21800, status: 'Paid' },
+            { date: '2026-02-03', invoiceNo: 'SP-2026-0029', schemeName: 'Amazon offer', stockist: 'Metro Pharma Dist.', amount: 14550, status: 'Paid' },
         ];
 
         // State
@@ -725,7 +725,7 @@
                     tr.innerHTML = `
           <td class="date">${formatDate(row.date)}</td>
           <td class="inv-no">${row.invoiceNo}</td>
-          <td class="chemist">${row.chemist}</td>
+          <td class="schemeName">${row.schemeName}</td>
           <td class="stockist">${row.stockist}</td>
           <td class="amount">₹${row.amount.toLocaleString('en-IN')}</td>
           <td><span class="badge ${badgeCls}">${row.status}</span></td>
@@ -801,7 +801,7 @@
             filtered = invoices.filter(row => {
                 const matchQ = !q ||
                     row.invoiceNo.toLowerCase().includes(q) ||
-                    row.chemist.toLowerCase().includes(q) ||
+                    row.schemeName.toLowerCase().includes(q) ||
                     row.stockist.toLowerCase().includes(q) ||
                     row.date.includes(q);
                 const matchStatus = !status || row.status === status;
